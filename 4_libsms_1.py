@@ -4,8 +4,7 @@ import pysms
 
 # Have to analyze source again for now, should really be a way to copy/clone frames
 audio_file = "voice.wav"
-frames, sms_header, snd_header = \
-    pysms.analyze(audio_file, env_type=pysms.SMS_ENV_FBINS, env_order=80)
+frames, sms_header, snd_header = pysms.analyze(audio_file)
 
 # Set modification parameters
 mod_params = pysms.SMS_ModifyParams()
