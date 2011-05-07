@@ -25,11 +25,9 @@ outp = SndRTIO(1, SND_OUTPUT)
 outp.SetOutput(1, obj)
 
 # get the default frame size
-f_size = outp.GetVectorSize()
+frame_size = outp.GetVectorSize()
 
 # output each frame
-i = 0
-while i < len(audio):
-    obj.PushIn(audio[i:i+f_size])
+for i in range(0, len(audio), frame_size):
+    obj.PushIn(audio[i:i+frame_size])
     outp.Write()
-    i += f_size
