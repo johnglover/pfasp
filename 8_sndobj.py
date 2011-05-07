@@ -4,23 +4,21 @@ from scipy.signal import firwin
 from scipy.io.wavfile import read
     
 # read audio file
-audio = read("drums.wav")[1]
+audio = read("voice.wav")[1]
 
 # use SciPy to low pass filter
 order = 101
-cutoff = 0.02
+cutoff = 0.1
 filter = firwin(order, cutoff)
 audio = sp.convolve(audio, filter, "same")
 
 # convert to 32-bit floats
 audio = sp.asarray(audio, sp.float32)
 
-# create a SndObj that will hold
-# frames of output audio
+# create a SndObj to hold frames of output audio
 obj = SndObj()
 
-# create a SndObj that will
-# output to the sound card
+# create a SndObj to output to the sound card
 outp = SndRTIO(1, SND_OUTPUT)
 outp.SetOutput(1, obj)
 
