@@ -1,28 +1,25 @@
 import simpl
-import matplotlib.pyplot as plt
-from scipy.io.wavfile import read
+from scipy.io.wavfile import read, write
+import scipy as sp
 
 # read audio samples
 audio = read("flute.wav")[1]
 
-# take just the first few frames
-audio = audio[0:4096]
+# convert to doubles between -1 and 1
+audio = sp.asarray(audio, dtype=sp.double) / 32768.0  
 
 # Peak detection with SndObj
 pd = simpl.SndObjPeakDetection()
 pd.max_peaks = 20
-pks = pd.find_peaks(audio)
+peaks = pd.find_peaks(audio)
 
 # Partial Tracking with the McAulay-Quatieri algorithm
 pt = simpl.MQPartialTracking()
 pt.max_partials = 20
-partls = pt.find_partials(pks)
+partials = pt.find_partials(peaks)
 
-# plot the detected partials
-simpl.plot.plot_partials(partls)
-
-# set title and label axes
-plt.title("Flute Partials")
-plt.ylabel("Frequency (Hz)")
-plt.xlabel("Frame Number")
-plt.show()
+# Synthesise output
+synth = simpl.SndObjSynthesis()
+audio_out = synth.synth(partials)
+audio_out = sp.asarray(audio_out * 32768, sp.int16)
+write('synth_flute.wav', 44100, audio_out)

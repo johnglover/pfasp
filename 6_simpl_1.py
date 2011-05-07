@@ -11,15 +11,15 @@ audio = audio[0:4096]
 # Peak detection with SndObj
 pd = simpl.SndObjPeakDetection()
 pd.max_peaks = 20
-pks = pd.find_peaks(audio)
+peaks = pd.find_peaks(audio)
 
 # Partial Tracking with the McAulay-Quatieri algorithm
 pt = simpl.MQPartialTracking()
 pt.max_partials = 20
-partls = pt.find_partials(pks)
+partials = pt.find_partials(peaks)
 
 # plot the detected partials
-simpl.plot.plot_partials(partls)
+simpl.plot.plot_partials(partials)
 
 # set title and label axes
 plt.title("Flute Partials")
